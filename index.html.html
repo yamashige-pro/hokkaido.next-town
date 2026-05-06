@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>北海道次世代まちづくり協議会</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;background:#DDE2E8;color:#1a1a2e}
+.site{max-width:1280px;margin:0 auto;background:#F7F8FA;min-height:720px}
+
+/* NAV */
+nav{background:#0F2A3D;padding:0 3rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.nav-logo{color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;gap:12px;cursor:pointer;letter-spacing:.06em}
+.nav-bar{width:5px;height:24px;background:#E8733A;border-radius:1px;flex-shrink:0}
+.nav-links{display:flex}
+.nav-links a{color:rgba(255,255,255,0.65);font-size:12px;text-decoration:none;padding:0 16px;height:56px;display:flex;align-items:center;cursor:pointer;border-bottom:2px solid transparent}
+.nav-links a:hover{color:#fff}
+.nav-links a.active{color:#fff;border-bottom-color:#E8733A}
+.page{display:none}
+.page.active{display:block}
+
+/* HERO */
+.hero{background:#0F2A3D;padding:4rem 3rem;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 420px;gap:3rem;align-items:center}
+.hero::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:#E8733A}
+.hero-tag{display:inline-block;border:1px solid rgba(232,115,58,0.55);color:#F0956A;font-size:11px;padding:3px 14px;border-radius:2px;margin-bottom:1.25rem;letter-spacing:.1em}
+.hero h1{color:#fff;font-size:28px;font-weight:500;line-height:1.6;margin-bottom:1rem}
+.hero h1 em{color:#F0956A;font-style:normal}
+.hero p{color:rgba(255,255,255,0.72);font-size:13px;line-height:1.9;margin-bottom:.75rem}
+.hero-link{font-size:12px;margin-bottom:0}
+.hero-link a{color:#F0956A;text-decoration:none}
+.hero-link a:hover{text-decoration:underline}
+.hero-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.meta-card{background:rgba(255,255,255,0.07);border:.5px solid rgba(255,255,255,0.15);border-radius:6px;padding:1rem 1.25rem;text-align:center}
+.meta-card .num{color:#F0956A;font-size:20px;font-weight:500}
+.meta-card .lbl{color:rgba(255,255,255,0.55);font-size:11px;margin-top:3px}
+
+/* HOME BODY */
+.home-body{display:grid;grid-template-columns:1fr 420px;gap:0;background:#fff}
+.news-panel{padding:2.25rem 2.5rem 2.25rem 3rem;border-right:.5px solid #E5E7EB}
+.contact-panel{padding:2.25rem 3rem 2.25rem 2.5rem;background:#F7F8FA}
+
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.panel-title{font-size:15px;font-weight:600;color:#0F2A3D;display:flex;align-items:center;gap:8px}
+.panel-title::before{content:'';display:block;width:4px;height:16px;background:#E8733A;border-radius:2px}
+.panel-en{font-size:10px;color:#9CA3AF;font-weight:400;margin-left:2px}
+
+.upcoming-box{background:#FFF7F2;border:1px solid #FDDCC4;border-radius:8px;padding:1.1rem 1.25rem;margin-bottom:1.1rem}
+.upcoming-label{font-size:10px;font-weight:600;color:#E8733A;letter-spacing:.06em;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.upcoming-label::before{content:'▶';font-size:8px}
+.upcoming-title{font-size:13px;font-weight:500;color:#0F2A3D;margin-bottom:4px}
+.upcoming-meta{font-size:11px;color:#6B7280;margin-bottom:8px}
+.upcoming-btns{display:flex;gap:8px}
+.btn-dl{display:inline-flex;align-items:center;gap:5px;background:#0F2A3D;color:#fff;font-size:11px;padding:6px 14px;border-radius:3px;cursor:pointer;text-decoration:none}
+.btn-dl:hover{background:#1E4D5C}
+.btn-apply{display:inline-flex;align-items:center;gap:5px;background:#E8733A;color:#fff;font-size:11px;padding:6px 14px;border-radius:3px;cursor:pointer;text-decoration:none}
+.btn-apply:hover{background:#cf5f28}
+.upcoming-note{font-size:11px;color:#9CA3AF;margin-top:8px;padding-top:8px;border-top:.5px solid #FDDCC4}
+
+.news-list{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.news-item{display:flex;flex-direction:column;gap:5px;padding:10px 12px;border-right:.5px solid #F3F4F6;cursor:pointer}
+.news-item:last-child{border-right:none}
+.news-item:hover .n-title{color:#E8733A}
+.n-top{display:flex;align-items:center;gap:6px}
+.n-date{color:#9CA3AF;font-size:11px}
+.n-badge.done{background:#E5E7EB;color:#6B7280;font-size:10px;padding:2px 7px;border-radius:3px;white-space:nowrap}
+.n-title{font-size:12px;color:#1F2937;line-height:1.55}
+.news-footer{display:flex;justify-content:flex-end;margin-top:10px}
+
+.contact-box{background:#fff;border-radius:8px;padding:1.25rem;border:.5px solid #E5E7EB;margin-bottom:1rem}
+.contact-org{font-size:12px;font-weight:600;color:#0F2A3D;margin-bottom:10px;padding-bottom:8px;border-bottom:.5px solid #E5E7EB}
+.contact-row{display:flex;gap:10px;margin-bottom:7px;font-size:12px;align-items:baseline}
+.contact-row:last-child{margin-bottom:0}
+.c-label{color:#9CA3AF;min-width:40px;font-size:11px;flex-shrink:0}
+.c-val{color:#1F2937;font-size:12px;line-height:1.6}
+.contact-note{background:#fff;border-radius:8px;padding:1.1rem 1.25rem;border:.5px solid #E5E7EB;display:flex;flex-direction:column;gap:.75rem}
+.contact-note p{font-size:11px;color:#6B7280;line-height:1.75}
+.contact-btn{display:block;width:100%;background:#0F2A3D;color:#fff;font-size:11px;padding:9px;border-radius:4px;border:none;cursor:pointer;text-align:center}
+.contact-btn:hover{background:#1E4D5C}
+
+.home-footer{background:#0F2A3D;padding:1.25rem 3rem;display:flex;justify-content:space-between;align-items:center}
+.home-footer p{color:rgba(255,255,255,0.35);font-size:11px}
+.f-links{display:flex;gap:1.25rem}
+.f-links a{color:rgba(255,255,255,0.35);font-size:11px;text-decoration:none;cursor:pointer}
+.f-links a:hover{color:rgba(255,255,255,0.7)}
+
+/* PAGE HEADER */
+.ph{background:#0F2A3D;padding:2rem 3rem;position:relative}
+.ph::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:#E8733A}
+.ph-bc{color:rgba(255,255,255,0.4);font-size:11px;margin-bottom:6px}
+.ph-bc span{color:rgba(255,255,255,0.7)}
+.ph h2{color:#fff;font-size:22px;font-weight:500;margin-bottom:4px}
+.ph p{color:rgba(255,255,255,0.62);font-size:13px}
+
+/* CONTENT */
+.content-wrap{padding:2.5rem 3rem;background:#fff}
+.divider{height:.5px;background:#E5E7EB;margin:2rem 0}
+.sec-label{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.sec-num{background:#E8733A;color:#fff;font-size:10px;font-weight:500;width:26px;height:26px;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-num.teal{background:#1E4D5C}
+.sec-num.navy{background:#0F2A3D}
+.sec-title{font-size:17px;font-weight:500;color:#0F2A3D}
+.sec-en{color:#6B7280;font-size:11px;margin-left:36px;margin-bottom:1.25rem}
+.tag{background:#E8E3D3;color:#1E4D5C;font-size:10px;padding:2px 7px;border-radius:2px}
+
+/* ABOUT */
+.about-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:2rem}
+.a-card{border:.5px solid #E5E7EB;border-radius:6px;padding:1.5rem;position:relative;overflow:hidden}
+.a-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#1E4D5C}
+.a-card.org::before{background:#E8733A}
+.a-card h3{font-size:14px;font-weight:500;color:#0F2A3D;margin-bottom:10px}
+.a-card p{font-size:13px;color:#6B7280;line-height:1.85}
+
+.org-box{border:.5px solid #E5E7EB;border-radius:6px;padding:1.75rem;margin-top:1rem}
+.org-ttl{text-align:center;font-size:13px;font-weight:500;color:#0F2A3D;margin-bottom:1.25rem;padding-bottom:10px;border-bottom:.5px solid #E5E7EB}
+.org-row{display:flex;justify-content:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.org-chip{background:#E8E3D3;color:#1E4D5C;font-size:12px;padding:6px 14px;border-radius:2px}
+.org-chip.navy{background:#0F2A3D;color:#fff}
+.org-chip.orange{background:#E8733A;color:#fff}
+.org-arr{text-align:center;color:#E8733A;font-size:12px;margin:6px 0}
+.org-note{text-align:center;font-size:11px;color:#6B7280;margin-top:10px}
+
+.steps-bg{background:#0F2A3D;padding:2.5rem 3rem;margin-top:2rem;border-radius:6px}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:1.25rem}
+.step{padding:1rem 1.25rem;position:relative}
+.step::after{content:'▶';position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:#E8733A;font-size:10px}
+.step:last-child::after{display:none}
+.s-phase{color:#F0956A;font-size:10px;font-weight:500;letter-spacing:.06em;margin-bottom:6px}
+.s-title{color:#fff;font-size:13px;font-weight:500;margin-bottom:8px}
+.s-body{color:rgba(255,255,255,0.58);font-size:12px;line-height:1.75}
+
+/* ACTIVITIES */
+.act-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:1rem}
+.act-card{border:.5px solid #E5E7EB;border-radius:6px;padding:1.5rem;position:relative;overflow:hidden}
+.act-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#1E4D5C}
+.act-card.org::before{background:#E8733A}
+.act-card h3{font-size:14px;font-weight:500;color:#0F2A3D;margin-bottom:8px}
+.act-card p{font-size:13px;color:#6B7280;line-height:1.8;margin-bottom:10px}
+.act-tags{display:flex;flex-wrap:wrap;gap:5px}
+
+/* RECORDS */
+.timeline{padding:2rem 3rem;position:relative;background:#fff}
+.tl-spine{position:absolute;left:3.75rem;top:2rem;bottom:2rem;width:1px;background:#E5E7EB}
+.tl-item{display:flex;gap:1.5rem;margin-bottom:1.5rem}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center;width:2rem;flex-shrink:0;padding-top:3px}
+.dot{width:12px;height:12px;border-radius:50%;background:#1E4D5C;border:2px solid #fff;outline:1.5px solid #1E4D5C;flex-shrink:0;z-index:1}
+.dot.org{background:#E8733A;outline-color:#E8733A}
+.tl-card{flex:1;border:.5px solid #E5E7EB;border-radius:6px;padding:1.25rem 1.5rem;position:relative;overflow:hidden;background:#fff}
+.tl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#1E4D5C}
+.tl-card.org::before{background:#E8733A}
+.tl-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.t-num{background:#0F2A3D;color:#fff;font-size:10px;padding:2px 10px;border-radius:2px;font-weight:500}
+.t-num.kick{background:#E8733A}
+.t-date{font-size:12px;color:#9CA3AF}
+.new-badge{font-size:10px;color:#E8733A;font-weight:500;margin-left:auto}
+.tl-inner{display:grid;grid-template-columns:1fr 220px;gap:1.25rem;align-items:start}
+.tl-title{font-size:14px;font-weight:500;color:#0F2A3D;margin-bottom:6px;line-height:1.5}
+.tl-body{font-size:13px;color:#4B5563;line-height:1.9}
+.spk-block{}
+.spk-label{font-size:10px;font-weight:600;color:#E8733A;letter-spacing:.05em;margin-bottom:5px}
+.spk-right{border-left:.5px solid #E5E7EB;padding-left:1.25rem}
+.spk-row{display:flex;flex-wrap:wrap;gap:6px}
+.spk{background:#EEF2F7;border:.5px solid #C7D8E8;border-radius:3px;padding:4px 10px;font-size:11px;font-weight:500;color:#0F2A3D}
+
+.next-row{padding:1.5rem 3rem;border-top:.5px solid #E5E7EB;display:flex;align-items:center;gap:1.5rem;background:#fff}
+.next-badge{background:#E8733A;color:#fff;font-size:10px;padding:3px 12px;border-radius:2px;white-space:nowrap}
+.next-info h3{font-size:14px;font-weight:500;color:#0F2A3D;margin-bottom:2px}
+.next-info p{font-size:12px;color:#6B7280}
+.next-btn{background:#0F2A3D;color:#fff;font-size:12px;padding:8px 18px;border-radius:2px;border:none;cursor:pointer;white-space:nowrap;margin-left:auto}
+
+/* CONTACT PAGE */
+.contact-page-inner{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.25rem}
+.contact-page-box{background:#F0F4F8;border-radius:8px;padding:1.75rem}
+.contact-page-org{font-size:13px;font-weight:600;color:#0F2A3D;margin-bottom:14px;padding-bottom:10px;border-bottom:.5px solid #DDE3EA}
+.contact-page-row{display:flex;gap:14px;font-size:13px;margin-bottom:10px;align-items:baseline}
+.contact-page-row:last-child{margin-bottom:0}
+.cp-label{color:#9CA3AF;min-width:48px;font-size:12px;flex-shrink:0}
+.cp-val{color:#1F2937}
+
+footer{background:#0F2A3D;padding:1.25rem 3rem;display:flex;justify-content:space-between;align-items:center}
+footer p{color:rgba(255,255,255,0.35);font-size:11px}
+
+@media print {
+  @page { size: A4; margin: 12mm 14mm; }
+  nav { position: static; }
+  footer, .home-footer, .news-footer, .next-btn { display: none !important; }
+  .page { display: block !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: #fff; }
+  .site { max-width: 100%; }
+  .page { page-break-after: always; }
+  .page:last-of-type { page-break-after: avoid; }
+  .tl-item, .a-card, .step { page-break-inside: avoid; }
+  a[href]::after { content: none !important; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-meta { grid-template-columns: repeat(4,1fr); }
+  .home-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="site">
+<nav>
+  <div class="nav-logo" onclick="showPage('home')"><div class="nav-bar"></div>北海道次世代まちづくり協議会</div>
+  <div class="nav-links">
+    <a onclick="showPage('home')" id="nav-home" class="active">ホーム</a>
+    <a onclick="showPage('about')" id="nav-about">設立趣旨・組織</a>
+    <a onclick="showPage('activities')" id="nav-activities">活動内容</a>
+    <a onclick="showPage('records')" id="nav-records">活動記録</a>
+    <a onclick="showPage('archive')" id="nav-archive">Archive</a>
+    <a onclick="showPage('contact')" id="nav-contact">参加・お問合せ</a>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-tag">HOKKAIDO NEXT TOWN PROJECT</div>
+      <h1>北海道の豊かな資産を活用し、<br>次世代のまちづくりと社会課題の解決、<br>地域経済の活性化に貢献します。</h1>
+      <p>北海道アセットマネジメント㈱（HAM）の設立理念に基づき、民間創発型の活動を推進する公民連携プラットフォームです。HAM出資企業・連携機関・まちづくり関連企業・自治体などが幅広く参加して活動しています。</p>
+      <p class="hero-link"><a href="https://hokkaido-am.co.jp/" target="_blank" style="color:#F0956A;text-decoration:none;border-bottom:1px solid rgba(240,149,106,0.5);padding-bottom:1px;">北海道アセットマネジメント㈱ ↗</a></p>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-card"><div class="num">2022年7月</div><div class="lbl">HAM設立</div></div>
+      <div class="meta-card"><div class="num">19社</div><div class="lbl">HAM共同出資企業</div></div>
+      <div class="meta-card"><div class="num">2024年2月</div><div class="lbl">第1号ファンド組成</div></div>
+      <div class="meta-card"><div class="num">2024年12月</div><div class="lbl">次世代協議会キックオフ</div></div>
+    </div>
+  </div>
+
+  <div class="home-body">
+    <div class="news-panel">
+      <div class="panel-head">
+        <div class="panel-title">開催案内<span class="panel-en">Upcoming Events</span></div>
+      </div>
+      <div class="upcoming-box">
+        <div class="upcoming-label">次回開催予定</div>
+        <div class="upcoming-title">第8回 札幌都心部会（準備中）</div>
+        <div class="upcoming-meta">日時・テーマ：企画確定次第掲載します</div>
+        <div class="upcoming-btns">
+          <a class="btn-dl" href="https://drive.google.com/file/d/1XGzfkCCYFAQ-AO8Rl_9pmpFMsVuroUww/view?usp=drive_link" target="_blank">📄 開催案内をダウンロード</a>
+          <a class="btn-apply" href="https://docs.google.com/forms/d/e/1FAIpQLSeNG22VDOaWwP53FkH74532jEhu2_whiMrDm682XQjMs_l1Hg/viewform?usp=header" target="_blank">✏️ 参加申込</a>
+        </div>
+        <div class="upcoming-note">※ 企画確定後にPDF・申込フォームが有効になります。</div>
+      </div>
+      <div style="font-size:11px;color:#9CA3AF;margin-bottom:10px;font-weight:500">直近の開催履歴</div>
+      <div class="news-list">
+        <div class="news-item" onclick="showPage('records')">
+          <div class="n-top"><span class="n-date">2025.12.22</span><span class="n-badge done">終了</span></div>
+          <div class="n-title">第7回 新たな公共交通とまちづくり分科会</div>
+        </div>
+        <div class="news-item" onclick="showPage('records')">
+          <div class="n-top"><span class="n-date">2025.10.16</span><span class="n-badge done">終了</span></div>
+          <div class="n-title">第6回 もみじ台地域の土地利用再編とまちづくり</div>
+        </div>
+        <div class="news-item" onclick="showPage('records')">
+          <div class="n-top"><span class="n-date">2025.08.22</span><span class="n-badge done">終了</span></div>
+          <div class="n-title">第5回 NoMapsの軌跡と次世代への展開</div>
+        </div>
+      </div>
+      <div class="news-footer">
+        <button onclick="showPage('records')" style="background:transparent;border:none;font-size:11px;color:#E8733A;cursor:pointer">活動記録をすべて見る →</button>
+      </div>
+    </div>
+
+    <div class="contact-panel">
+      <div class="panel-head">
+        <div class="panel-title">お問い合わせ<span class="panel-en">Contact</span></div>
+      </div>
+      <div class="contact-box">
+        <div class="contact-org">北海道アセットマネジメント㈱　企画開発委員会</div>
+        <div class="contact-row"><span class="c-label">担当</span><span class="c-val">山重 明（企画開発委員長）</span></div>
+        <div class="contact-row"><span class="c-label">TEL</span><span class="c-val">090-9759-7671</span></div>
+        <div class="contact-row"><span class="c-label">Mail</span><span class="c-val" style="color:#1E4D5C;font-size:11px;white-space:nowrap">yamashige@northerncross-pro.com</span></div>
+        <div class="contact-row" style="align-items:flex-start"><span class="c-label">場所</span><span class="c-val" style="font-size:10.5px;line-height:1.7">札幌市中央区大通東2丁目3-1　第36桂和ビル 9階<br>ノーザンクロス会議室</span></div>
+      </div>
+      <div class="contact-note">
+        <p>民間企業、自治体、経済団体、専門機関など、次世代まちづくりにコミットするメンバーの参加をお待ちしています。</p>
+        <button class="contact-btn" onclick="showPage('contact')">参加のご案内 →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-footer">
+    <p>© 北海道次世代まちづくり協議会 ／ 主催：北海道アセットマネジメント㈱ 企画開発委員会</p>
+    <div class="f-links">
+      <a onclick="showPage('about')">設立趣旨</a>
+      <a onclick="showPage('activities')">活動内容</a>
+      <a onclick="showPage('records')">活動記録</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="ph">
+    <div class="ph-bc">ホーム &gt; <span>設立趣旨・組織</span></div>
+    <h2>設立趣旨・組織</h2>
+    <p>北海道アセットマネジメント㈱の理念のもと、民間創発型の公民連携プラットフォームとして設立されました。</p>
+  </div>
+  <div class="content-wrap">
+    <div class="sec-label"><div class="sec-num">01</div><div class="sec-title">設立趣旨</div></div>
+    <div class="sec-en">Purpose of Establishment</div>
+    <div class="about-cards">
+      <div class="a-card org">
+        <h3>北海道アセットマネジメント㈱（HAM）とは</h3>
+        <p>北海道リート投資法人の資産運用会社として、地元企業を中心に19社の共同出資により2022年7月に設立。REITの仕組みを活用し、地域不動産の有効活用と価値向上、新たなまちづくり投資や事業投資の促進を目的に事業を推進しています。2024年2月に第1号ファンドを組成し、本格始動しました。</p>
+      </div>
+      <div class="a-card">
+        <h3>協議会の設立趣旨</h3>
+        <p>HAMの設立理念を実装化するため、HAMの企画開発委員会が関係企業や自治体等に幅広く参加を呼びかけて設立。民間創発型の情報共有・発信、共同研究・プロジェクト提案を推進します。公民連携のプラットフォームとして、PPP・PREの共同研究も行います。</p>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="sec-label"><div class="sec-num teal">02</div><div class="sec-title">組織</div></div>
+    <div class="sec-en">Organization</div>
+    <div class="org-box">
+      <div class="org-ttl">北海道次世代まちづくり協議会 — 組織イメージ</div>
+      <div class="org-row">
+        <div class="org-chip navy">エリア部会</div>
+        <div class="org-chip navy">テーマ研究会</div>
+        <div class="org-chip navy">PPP研究会</div>
+        <div class="org-chip navy">フォーラム</div>
+      </div>
+      <div class="org-arr">▲ コミット</div>
+      <div class="org-row">
+        <div class="org-chip">自治体・経済団体</div>
+        <div class="org-chip">地元企業・金融機関</div>
+        <div class="org-chip">専門家・専門機関</div>
+        <div class="org-chip">投資家・開発事業者</div>
+        <div class="org-chip">出資企業・連携機関</div>
+      </div>
+      <div class="org-arr">▲ 主催・運営</div>
+      <div class="org-row"><div class="org-chip orange">【呼びかけ人】HAM企画開発委員会</div></div>
+      <div class="org-note">初動期はボランタリー活動。活動基盤が整った段階で公益法人化を展望。</div>
+    </div>
+    <div class="steps-bg">
+      <div class="sec-label"><div class="sec-num">04</div><div class="sec-title" style="color:#fff">活動ステップ</div></div>
+      <div class="steps-grid">
+        <div class="step"><div class="s-phase">【初動期】</div><div class="s-title">札幌都心部会から始動</div><div class="s-body">HAM出資企業・連携機関を中心に初動メンバーを構成し「札幌都心部会×研究会」をスタート。運営基盤を整えます。</div></div>
+        <div class="step"><div class="s-phase">【展開期】</div><div class="s-title">エリア部会・研究会を展開</div><div class="s-body">札幌都心部会をモデルに道内各エリアへ展開。テーマ研究会・PPP研究会も広げていきます。</div></div>
+        <div class="step"><div class="s-phase">【創発期】</div><div class="s-title">次世代プロジェクト創発</div><div class="s-body">部会×研究会を通じ、公民パートナーシップによる「次世代まちづくりプロジェクト」を創発します。</div></div>
+        <div class="step"><div class="s-phase">【自走期】</div><div class="s-title">公益法人化による持続的な活動</div><div class="s-body">フラットな組織の特長を生かしつつ、公益法人化による持続的・自立的な組織へ移行します。</div></div>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 北海道次世代まちづくり協議会</p><div class="f-links"><a onclick="showPage('home')">ホーム</a><a onclick="showPage('activities')">活動内容</a><a onclick="showPage('records')">活動記録</a></div></footer>
+</div>
+
+<!-- ACTIVITIES -->
+<div class="page" id="page-activities">
+  <div class="ph">
+    <div class="ph-bc">ホーム &gt; <span>活動内容</span></div>
+    <h2>活動内容</h2>
+    <p>エリア部会・テーマ研究会・PPP研究会・フォーラムの4部門で次世代まちづくりを推進します。</p>
+  </div>
+  <div class="content-wrap">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+      <!-- 左カラム -->
+      <div>
+        <div class="sec-label"><div class="sec-num">01</div><div class="sec-title">エリア部会</div></div>
+        <div class="sec-en">Area Committee</div>
+        <p style="font-size:13px;color:#6B7280;line-height:1.85;margin-bottom:12px">道内の都市・地域における次世代まちづくりの課題やビジョン、推進方策などを共有し、具体的なプロジェクトを展開していくため公民共同のエリア部会を開催。各エリアの課題・目的・プロジェクトに応じた横断的なワーキンググループとして運営します。</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:2rem"><span class="tag">札幌都心</span><span class="tag">道央エリア</span><span class="tag">道南エリア</span><span class="tag">道北エリア</span><span class="tag">道東エリア</span><span class="tag">中心市街地</span><span class="tag">拠点地区</span></div>
+        <div style="height:.5px;background:#E5E7EB;margin-bottom:2rem"></div>
+        <div class="sec-label"><div class="sec-num">03</div><div class="sec-title">PPP研究会</div></div>
+        <div class="sec-en">PPP Study Group</div>
+        <p style="font-size:13px;color:#6B7280;line-height:1.85;margin-bottom:12px">各エリアの地域資産を有効に活用し、まちづくり投資を促進するための公民パートナーシップとマネジメントのあり方、具体的な手法と仕組みに関する研究会を開催します。</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px"><span class="tag">まちづくりSPC</span><span class="tag">身の丈再開発</span><span class="tag">コンバージョン</span><span class="tag">公共不動産</span><span class="tag">不動産流動化</span><span class="tag">マネジメント</span><span class="tag">政策・制度</span></div>
+      </div>
+      <!-- 右カラム -->
+      <div style="border-left:.5px solid #E5E7EB;padding-left:2rem">
+        <div class="sec-label"><div class="sec-num teal">02</div><div class="sec-title">テーマ研究会</div></div>
+        <div class="sec-en">Theme Study Group</div>
+        <p style="font-size:13px;color:#6B7280;line-height:1.85;margin-bottom:12px">次世代まちづくりに関する重点テーマや課題を設定し、メンバーや専門家の多角的な情報・知見を集めて議論を行い、新たなプロジェクトを創発。テーマはメンバーからの提案により随時設定します。</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:2rem"><span class="tag">GX</span><span class="tag">スマートシティ</span><span class="tag">リノベーション</span><span class="tag">都市木造化</span><span class="tag">次世代交通</span><span class="tag">観光まちづくり</span><span class="tag">6次産業化</span></div>
+        <div style="height:.5px;background:#E5E7EB;margin-bottom:2rem"></div>
+        <div class="sec-label"><div class="sec-num navy">04</div><div class="sec-title">フォーラム・情報発信</div></div>
+        <div class="sec-en">Forum &amp; Communication</div>
+        <p style="font-size:13px;color:#6B7280;line-height:1.85;margin-bottom:12px">毎年、定期的に「北海道次世代まちづくりフォーラム」を開催し、部会や研究会の活動成果・プロジェクト提案等を共有・発信します。協議会のWEBを開設し、SNSやマスメディアを活用した広報活動も行います。</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px"><span class="tag">年次フォーラム</span><span class="tag">NoMaps連携</span><span class="tag">WEB</span><span class="tag">SNS</span><span class="tag">マスメディア</span></div>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 北海道次世代まちづくり協議会</p><div class="f-links"><a onclick="showPage('home')">ホーム</a><a onclick="showPage('about')">設立趣旨</a><a onclick="showPage('records')">活動記録</a></div></footer>
+</div>
+
+<!-- RECORDS -->
+<div class="page" id="page-records">
+  <div class="ph">
+    <div class="ph-bc">ホーム &gt; <span>活動記録</span></div>
+    <h2>活動記録 — 札幌都心部会</h2>
+    <p>2024年12月のキックオフより継続開催。公民連携・次世代まちづくりをテーマに各界の話題提供者を迎えてフリートークを実施。</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-spine"></div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="dot org"></div></div>
+      <div class="tl-card org">
+        <div class="tl-top"><span class="t-num kick">第7回</span><span class="t-date">2025年12月22日（月）16:00〜17:30</span><span class="new-badge">最新</span></div>
+        <div class="tl-inner">
+          <div>
+            <div class="tl-title">新たな公共交通とまちづくり分科会（創成イーストモデル）</div>
+            <div class="tl-body">第2回で取り上げた「新たな公共交通システム」をテーマに分科会を設置。2030年度本格運行を目指す水素燃料電池連節車両・AIデマンド交通について、創成イーストをモデルとしたまちづくりとの連携方策を継続的に検討する場として位置づけ。</div>
+          </div>
+          <div class="spk-right">
+            <div class="spk-label">話題提供者</div>
+            <div class="spk-row"><div class="spk">札幌市 総合交通計画部</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="dot"></div></div>
+      <div class="tl-card">
+        <div class="tl-top"><span class="t-num">第6回</span><span class="t-date">2025年10月16日（木）16:00〜17:30</span></div>
+        <div class="tl-inner">
+          <div>
+            <div class="tl-title">もみじ台地域の土地利用再編を契機としたまちづくり</div>
+            <div class="tl-body">市営住宅約5,500戸（市内全体の約2割）を擁する厚別区もみじ台地域の再整備をテーマに意見交換。令和6年3月策定の「まちづくり指針」を踏まえ、令和8年度予定の土地利用再編方針策定後の整備事業・エリマネ事業実施に向けた論点を共有。</div>
+          </div>
+          <div class="spk-right">
+            <div class="spk-label">話題提供者</div>
+            <div class="spk-row"><div class="spk">札幌市 都市計画部 地域計画課</div><div class="spk">㈱市浦ハウジング＆プランニング</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="dot"></div></div>
+      <div class="tl-card">
+        <div class="tl-top"><span class="t-num">第5回</span><span class="t-date">2025年8月22日（金）16:00〜17:30</span></div>
+        <div class="tl-inner">
+          <div>
+            <div class="tl-title">NoMapsの軌跡と次世代への展開について</div>
+            <div class="tl-body">2016年に第1回が開催され2025年で10周年を迎えるNoMapsの軌跡と次世代展開をテーマに議論。「地図なき領域を開拓する」というコンセプトのもと、9月10〜14日開催プログラムの紹介も含め、クリエイティブなまちづくりのあり方を共有。</div>
+          </div>
+          <div class="spk-right">
+            <div class="spk-label">話題提供者</div>
+            <div class="spk-row"><div class="spk">NoMaps実行委員会</div><div class="spk">クリプトン・フューチャー・メディア㈱</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="dot"></div></div>
+      <div class="tl-card">
+        <div class="tl-top"><span class="t-num">第4回</span><span class="t-date">2025年7月22日（火）16:00〜17:30</span></div>
+        <div class="tl-inner">
+          <div>
+            <div class="tl-title">都市の木造化と地産地消の取組 ― ザ ロイヤルパークキャンバス 札幌大通公園</div>
+            <div class="tl-body">北海道産木材を活用した国内初の高層ハイブリッド木造ホテルを事例に、都市の木造化・地産地消・都市と森林の循環についてフリートーク。三菱地所グループが2021年10月に開業した先導的取組の詳細を共有。</div>
+          </div>
+          <div class="spk-right">
+            <div class="spk-label">話題提供者</div>
+            <div class="spk-row"><div class="spk">三菱地所㈱</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="dot"></div></div>
+      <div class="tl-card">
+        <div class="tl-top"><span class="t-num">第3回</span><span class="t-date">2025年5月30日（金）16:00〜17:30</span></div>
+        <div class="tl-inner">
+          <div>
+            <div class="tl-title">「GX金融・資産運用特区」の展開について</div>
+            <div class="tl-body">2024年6月に国家戦略特区指定を受けた北海道・札幌市の「GX金融・資産運用特区」をテーマに情報共有。産学官金コンソーシアム「Team Sapporo-Hokkaido」が推進するGXプロジェクト・GX投資の概要と次世代まちづくりへの展開を議論。</div>
+          </div>
+          <div class="spk-right">
+            <div class="spk-label">話題提供者</div>
+            <div class="spk-row"><div class="spk">札幌市 まちづくり政策局 GX推進室</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="dot"></div></div>
+      <div class="tl-card">
+        <div class="tl-top"><span class="t-num">第2回</span><span class="t-date">2025年2月28日（金）16:00〜17:30</span></div>
+        <div class="tl-inner">
+          <div>
+            <div class="tl-title">札幌市の新たな公共交通システムについて</div>
+            <div class="tl-body">新幹線延伸に伴う交通需要対応・水素活用を目的とした「新たな公共交通システムの構築」について情報共有。水素燃料電池車両とAIデマンド交通の導入、2030年度本格運行に向けた社会実験準備の概要を共有し意見交換。</div>
+          </div>
+          <div class="spk-right">
+            <div class="spk-label">話題提供者</div>
+            <div class="spk-row"><div class="spk">札幌市 まちづくり政策局 総合交通計画部</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="dot org"></div></div>
+      <div class="tl-card org">
+        <div class="tl-top"><span class="t-num kick">キックオフ</span><span class="t-date">2024年12月20日（金）16:00〜17:30</span></div>
+        <div class="tl-inner">
+          <div>
+            <div class="tl-title">公民連携（PPP）×都心まちづくり ／ 札幌都心部会のテーマ設定</div>
+            <div class="tl-body">「第3次都心まちづくり計画」の策定概要を話題提供として共有し、公民連携のあり方についてフリートーク。行政・民間双方の連携ニーズと課題を率直に出し合い、今後の部会テーマのアイデア出しを実施。</div>
+          </div>
+          <div class="spk-right">
+            <div class="spk-label">話題提供者</div>
+            <div class="spk-row"><div class="spk">札幌市 都心まちづくり推進室</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="next-row">
+    <div class="next-badge">NEXT</div>
+    <div class="next-info">
+      <h3>第8回 札幌都心部会（調整中）</h3>
+      <p>開催日程・テーマは決定次第お知らせします。テーマ提案はお問い合わせください。</p>
+    </div>
+    <button class="next-btn" onclick="showPage('contact')">お問い合わせ</button>
+  </div>
+  <footer><p>© 北海道次世代まちづくり協議会</p><div class="f-links"><a onclick="showPage('home')">ホーム</a><a onclick="showPage('about')">設立趣旨</a><a onclick="showPage('activities')">活動内容</a></div></footer>
+</div>
+
+<!-- ARCHIVE -->
+<div class="page" id="page-archive">
+  <div class="ph">
+    <div class="ph-bc">ホーム &gt; <span>Archive</span></div>
+    <h2>Archive</h2>
+    <p>各回の開催案内・資料等をダウンロードできます。</p>
+  </div>
+  <div class="content-wrap">
+
+    <!-- 札幌都心部会 -->
+    <div class="sec-label"><div class="sec-num">部会</div><div class="sec-title">札幌都心部会</div></div>
+    <div class="sec-en">Sapporo Urban Core Committee</div>
+
+    <table style="width:100%;border-collapse:collapse;margin-top:1rem;font-size:13px">
+      <thead>
+        <tr style="background:#0F2A3D;color:#fff">
+          <th style="padding:10px 14px;text-align:left;font-weight:500;width:80px">回</th>
+          <th style="padding:10px 14px;text-align:left;font-weight:500;width:140px">開催日</th>
+          <th style="padding:10px 14px;text-align:left;font-weight:500">テーマ</th>
+          <th style="padding:10px 14px;text-align:center;font-weight:500;width:130px">資料</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:.5px solid #E5E7EB;background:#FFF7F2">
+          <td style="padding:10px 14px;color:#E8733A;font-weight:600">第8回</td>
+          <td style="padding:10px 14px;color:#6B7280">準備中</td>
+          <td style="padding:10px 14px;color:#0F2A3D">企画確定次第掲載</td>
+          <td style="padding:10px 14px;text-align:center;color:#9CA3AF;font-size:11px">準備中</td>
+        </tr>
+        <tr style="border-bottom:.5px solid #E5E7EB">
+          <td style="padding:10px 14px;color:#6B7280;font-weight:500">第7回</td>
+          <td style="padding:10px 14px;color:#6B7280">2025.12.22</td>
+          <td style="padding:10px 14px;color:#0F2A3D">新たな公共交通とまちづくり分科会（創成イーストモデル）</td>
+          <td style="padding:10px 14px;text-align:center"><span style="font-size:11px;color:#9CA3AF">準備中</span></td>
+        </tr>
+        <tr style="border-bottom:.5px solid #E5E7EB;background:#F9FAFB">
+          <td style="padding:10px 14px;color:#6B7280;font-weight:500">第6回</td>
+          <td style="padding:10px 14px;color:#6B7280">2025.10.16</td>
+          <td style="padding:10px 14px;color:#0F2A3D">もみじ台地域の土地利用再編を契機としたまちづくり</td>
+          <td style="padding:10px 14px;text-align:center"><span style="font-size:11px;color:#9CA3AF">準備中</span></td>
+        </tr>
+        <tr style="border-bottom:.5px solid #E5E7EB">
+          <td style="padding:10px 14px;color:#6B7280;font-weight:500">第5回</td>
+          <td style="padding:10px 14px;color:#6B7280">2025.08.22</td>
+          <td style="padding:10px 14px;color:#0F2A3D">NoMapsの軌跡と次世代への展開について</td>
+          <td style="padding:10px 14px;text-align:center"><span style="font-size:11px;color:#9CA3AF">準備中</span></td>
+        </tr>
+        <tr style="border-bottom:.5px solid #E5E7EB;background:#F9FAFB">
+          <td style="padding:10px 14px;color:#6B7280;font-weight:500">第4回</td>
+          <td style="padding:10px 14px;color:#6B7280">2025.07.22</td>
+          <td style="padding:10px 14px;color:#0F2A3D">都市の木造化と地産地消の取組</td>
+          <td style="padding:10px 14px;text-align:center"><span style="font-size:11px;color:#9CA3AF">準備中</span></td>
+        </tr>
+        <tr style="border-bottom:.5px solid #E5E7EB">
+          <td style="padding:10px 14px;color:#6B7280;font-weight:500">第3回</td>
+          <td style="padding:10px 14px;color:#6B7280">2025.05.30</td>
+          <td style="padding:10px 14px;color:#0F2A3D">「GX金融・資産運用特区」の展開について</td>
+          <td style="padding:10px 14px;text-align:center"><span style="font-size:11px;color:#9CA3AF">準備中</span></td>
+        </tr>
+        <tr style="border-bottom:.5px solid #E5E7EB;background:#F9FAFB">
+          <td style="padding:10px 14px;color:#6B7280;font-weight:500">第2回</td>
+          <td style="padding:10px 14px;color:#6B7280">2025.02.28</td>
+          <td style="padding:10px 14px;color:#0F2A3D">札幌市の新たな公共交通システムについて</td>
+          <td style="padding:10px 14px;text-align:center"><span style="font-size:11px;color:#9CA3AF">準備中</span></td>
+        </tr>
+        <tr style="border-bottom:.5px solid #E5E7EB">
+          <td style="padding:10px 14px;color:#6B7280;font-weight:500">キックオフ</td>
+          <td style="padding:10px 14px;color:#6B7280">2024.12.20</td>
+          <td style="padding:10px 14px;color:#0F2A3D">公民連携（PPP）×都心まちづくり ／ 札幌都心部会のテーマ設定</td>
+          <td style="padding:10px 14px;text-align:center"><span style="font-size:11px;color:#9CA3AF">準備中</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="divider"></div>
+
+    <!-- 参考資料 -->
+    <div class="sec-label"><div class="sec-num teal">参考</div><div class="sec-title">参考資料・協議会概要</div></div>
+    <div class="sec-en">Reference Documents</div>
+    <table style="width:100%;border-collapse:collapse;margin-top:1rem;font-size:13px">
+      <thead>
+        <tr style="background:#1E4D5C;color:#fff">
+          <th style="padding:10px 14px;text-align:left;font-weight:500">資料名</th>
+          <th style="padding:10px 14px;text-align:center;font-weight:500;width:130px">ダウンロード</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:.5px solid #E5E7EB">
+          <td style="padding:10px 14px;color:#0F2A3D">北海道次世代まちづくり協議会の設立と活動について（概要書）</td>
+          <td style="padding:10px 14px;text-align:center">
+            <a href="https://drive.google.com/file/d/1y2ZbtiHGz6LThGY1_mrYoQrg_JYAiGmy/view?usp=sharing" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:#1E4D5C;color:#fff;font-size:11px;padding:5px 12px;border-radius:3px;text-decoration:none">📄 PDF</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:1.5rem;padding:1rem 1.25rem;background:#F0F4F8;border-radius:6px;font-size:12px;color:#6B7280;line-height:1.8">
+      ※ 資料のアップロードはGoogleドライブの共有リンクを取得し、各行の「準備中」をリンクボタンに差し替えてください。
+    </div>
+  </div>
+  <footer><p>© 北海道次世代まちづくり協議会</p><div class="f-links"><a onclick="showPage('home')">ホーム</a><a onclick="showPage('records')">活動記録</a><a onclick="showPage('contact')">お問合せ</a></div></footer>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="ph">
+    <div class="ph-bc">ホーム &gt; <span>参加・お問い合わせ</span></div>
+    <h2>参加・お問い合わせ</h2>
+    <p>民間企業、自治体、経済団体、専門機関など、次世代まちづくりにコミットするメンバーの参加をお待ちしています。</p>
+  </div>
+  <div class="content-wrap">
+    <div class="sec-label"><div class="sec-num">参加</div><div class="sec-title">参加対象・方法</div></div>
+    <div class="sec-en">How to Join</div>
+    <div class="about-cards" style="margin-top:1.25rem">
+      <div class="a-card">
+        <h3>参加対象</h3>
+        <p>HAM出資企業・連携機関をはじめ、次世代まちづくりにコミットする民間企業、自治体、経済団体、地域金融機関、投資家・開発事業者、専門家・専門機関など幅広くご参加いただけます。</p>
+      </div>
+      <div class="a-card org">
+        <h3>費用・運営</h3>
+        <p>初動期の活動はボランタリーで行います。研究会等の活動場所も出来る限りメンバーが提供。フォーラム等で会場費がかかる場合は、参加者から実費相当を参加料として徴収します。</p>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="sec-label"><div class="sec-num teal">連絡</div><div class="sec-title">お問い合わせ先</div></div>
+    <div class="sec-en">Contact</div>
+    <div class="contact-page-inner">
+      <div class="contact-page-box">
+        <div class="contact-page-org">北海道アセットマネジメント㈱ 企画開発委員会</div>
+        <div class="contact-page-row"><span class="cp-label">担当</span><span class="cp-val">山重 明（企画開発委員長）</span></div>
+        <div class="contact-page-row"><span class="cp-label">Mail</span><span class="cp-val" style="color:#1E4D5C">yamashige@northerncross-pro.com</span></div>
+        <div class="contact-page-row"><span class="cp-label">電話</span><span class="cp-val">090-9759-7671</span></div>
+        <div class="contact-page-row" style="align-items:flex-start"><span class="cp-label">場所</span><span class="cp-val" style="line-height:1.7">札幌市中央区大通東2丁目3-1　第36桂和ビル 9階<br>ノーザンクロス会議室</span></div>
+      </div>
+      <div style="background:#FFF7F2;border:1px solid #FDDCC4;border-radius:8px;padding:1.75rem;display:flex;flex-direction:column;justify-content:center;gap:1rem">
+        <p style="font-size:13px;color:#6B7280;line-height:1.8">テーマのご提案、参加のご希望、連携のご相談など、お気軽にお問い合わせください。</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNG22VDOaWwP53FkH74532jEhu2_whiMrDm682XQjMs_l1Hg/viewform?usp=header" target="_blank" style="display:block;text-align:center;background:#E8733A;color:#fff;font-size:13px;padding:12px;border-radius:4px;text-decoration:none">✏️ 参加申込フォームへ</a>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 北海道次世代まちづくり協議会</p><div class="f-links"><a onclick="showPage('home')">ホーム</a><a onclick="showPage('about')">設立趣旨</a><a onclick="showPage('records')">活動記録</a></div></footer>
+</div>
+</div>
+
+<script>
+// パスワード保護
+(function(){
+  var correct = 'next-town';
+  var key = 'hntp_auth';
+  if(sessionStorage.getItem(key) !== '1'){
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:#0F2A3D;display:flex;align-items:center;justify-content:center;z-index:9999';
+    overlay.innerHTML = `
+      <div style="background:#fff;border-radius:10px;padding:2.5rem 3rem;text-align:center;min-width:340px;box-shadow:0 8px 32px rgba(0,0,0,0.25)">
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.5rem">
+          <div style="width:5px;height:28px;background:#E8733A;border-radius:2px"></div>
+          <div style="font-size:14px;font-weight:600;color:#0F2A3D;letter-spacing:.05em">北海道次世代まちづくり協議会</div>
+        </div>
+        <p style="font-size:13px;color:#6B7280;margin-bottom:1.25rem">メンバー専用サイトです。<br>パスワードを入力してください。</p>
+        <input id="pw-input" type="password" placeholder="パスワード"
+          style="width:100%;padding:10px 14px;border:1px solid #D1D5DB;border-radius:6px;font-size:13px;margin-bottom:.75rem;outline:none;box-sizing:border-box">
+        <div id="pw-err" style="font-size:12px;color:#E8733A;min-height:18px;margin-bottom:.75rem"></div>
+        <button id="pw-btn"
+          style="width:100%;background:#0F2A3D;color:#fff;border:none;border-radius:6px;padding:10px;font-size:13px;cursor:pointer">入　力</button>
+      </div>`;
+    document.body.appendChild(overlay);
+    function tryLogin(){
+      if(document.getElementById('pw-input').value === correct){
+        sessionStorage.setItem(key,'1');
+        overlay.remove();
+      } else {
+        document.getElementById('pw-err').textContent = 'パスワードが正しくありません。';
+        document.getElementById('pw-input').value = '';
+        document.getElementById('pw-input').focus();
+      }
+    }
+    document.getElementById('pw-btn').addEventListener('click', tryLogin);
+    document.getElementById('pw-input').addEventListener('keydown', function(e){ if(e.key==='Enter') tryLogin(); });
+    document.getElementById('pw-input').focus();
+  }
+})();
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
